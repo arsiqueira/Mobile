@@ -5,6 +5,7 @@ import Welcome from '../pages/Welcome'
 import SignIn from '../pages/SingIn'
 import Cadastro from '../pages/SingIn/Cadastro'
 import Concluido from '../pages/SingIn/Cadastro/concluido.js'
+import Agendar from '../pages/Agendamento/componente/agendado.js'
 import Home from '../pages/Home'
 import Contato from '../pages/Contato'
 import Servicos from '../pages/Servicos'
@@ -41,6 +42,11 @@ export default function Routes() {
             <Stack.Screen
                 name="Rotas"
                 component={Rotas}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Agendar"
+                component={Agendar}
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="VideoScreen" component={VideoScreen} options={{ headerShown: false }} />

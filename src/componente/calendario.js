@@ -18,7 +18,7 @@ function MyApp() {
         // Customize the appearance of the calendar
         style={styles.containerCalendario}
         // Specify the current date
-        current={'2023-06-07'}
+        current={'2023-12-05'}
         // Callback that gets called when the user selects a day
         onDayPress={day => {
           console.log('selected day', day);
@@ -29,7 +29,7 @@ function MyApp() {
           //data configuradas
           '2012-03-01 2012-03-04': {selected: true, marked: true, selectedColor: 'pink'},
           '2012-03-02': {marked: true},
-          '2023-06-07': {selected: true, marked: true, selectedColor: 'pink'},
+          '2023-06-05': {selected: true, marked: true, selectedColor: 'pink'},
           //onde seleciona a data
           [selected]: {selected: true, disableTouchEvent: true, selectedColor: '#D07B85'}
         }}

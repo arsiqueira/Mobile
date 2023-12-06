@@ -4,6 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import Notificacoes from '../../componente/notificacao';
+import Perfil from '../../componente/perfil';
 
 export default function Sobre() {
   const navigation = useNavigation();
@@ -11,6 +12,7 @@ export default function Sobre() {
     <ImageBackground source={require('../../../assets/fundo.png')} style={styles.imageBackground}>
       <StatusBar backgroundColor="#E4BBB7" barStyle="light-content" />
       <View style={styles.containerTopo}>
+        <Perfil/>
         <Image source={require('../../../assets/assets/logo.png')} style={styles.img} />
         <Notificacoes/>
       </View>

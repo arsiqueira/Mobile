@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import Notificacoes from '../../componente/notificacao';
+import Perfil from '../../componente/perfil';
 
 export default function Contato() {
   const navigation = useNavigation();
@@ -12,6 +13,7 @@ export default function Contato() {
       <StatusBar backgroundColor="#E4BBB7" barStyle="light-content" />
       <ImageBackground source={require('../../../assets/fundo.png')} style={styles.backgroundImage}>
         <View style={styles.containerTopo}>
+          <Perfil/>
           <Image source={require('../../../assets/assets/logo.png')} style={styles.img} />
           <Notificacoes/>
         </View>
@@ -21,17 +23,26 @@ export default function Contato() {
           <Text style={styles.textCont}>CONTATO</Text>
 
           <Image source={require('../../../assets/assets/icones/iconWhats.png')} style={styles.imgWhats} />
-          <TouchableOpacity style={styles.buttonWhats} onPress={() => navigation.navigate('Contato')}>
+          <TouchableOpacity
+            style={styles.buttonWhats}
+            onPress={() => Linking.openURL('whatsapp://send?phone=5511970418838')}
+          >
             <Text style={styles.buttonText}>WHATSAPP</Text>
           </TouchableOpacity>
 
           <Image source={require('../../../assets/assets/icones/iconEmail.png')} style={styles.imgEmail} />
-          <TouchableOpacity style={styles.buttonMail} onPress={() => navigation.navigate('Contato')}>
+          <TouchableOpacity
+            style={styles.buttonMail}
+            onPress={() => Linking.openURL('mailto:contato.espacotulipaa@gmail.com')}
+          >
             <Text style={styles.buttonText2}>EMAIL</Text>
           </TouchableOpacity>
 
           <Image source={require('../../../assets/assets/icones/iconInsta.png')} style={styles.imgInsta} />
-          <TouchableOpacity style={styles.buttonInsta} onPress={() => navigation.navigate('Contato')}>
+          <TouchableOpacity
+            style={styles.buttonInsta}
+            onPress={() => Linking.openURL('https://www.instagram.com/marcia_espaco_tulipas/')}
+          >
             <Text style={styles.buttonText2}>INSTAGRAM</Text>
           </TouchableOpacity>
         </View>
@@ -39,6 +50,7 @@ export default function Contato() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

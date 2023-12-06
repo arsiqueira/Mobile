@@ -9,6 +9,7 @@ import imagem3 from '../../../assets/Serviços/img3.jpg';
 import imagem4 from '../../../assets/Serviços/img4.jpg';
 import imagem5 from '../../../assets/Serviços/img5.jpg';
 import Notificacoes from '../../componente/notificacao';
+import Perfil from '../../componente/perfil';
 
 const lado = Dimensions.get('window');
 
@@ -49,6 +50,7 @@ export default function Welcome() {
       <ImageBackground source={require('../../../assets/fundo.png')} style={styles.imageBackground}>
         <StatusBar backgroundColor="#E4BBB7" barStyle='light-content' />
         <View style={styles.containerTopo}>
+          <Perfil/>
           <Image source={require('../../../assets/assets/logo.png')} style={styles.img} />
           <Notificacoes/>
         </View>

@@ -3,14 +3,17 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, Alert } from 'r
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const Perfil = ({ navigation }) => {
+const Perfil = () => {
+  const navigation = useNavigation();
   const [imagemPerfil, setImagemPerfil] = useState(null);
   const [cameraAberta, setCameraAberta] = useState(false);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const cameraRef = useRef(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [temPermissao, setTemPermissao] = useState(null);
+  const [lixeiraVisivel, setLixeiraVisivel] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -31,14 +34,21 @@ const Perfil = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImagemPerfil(result.uri);
-      setModalVisivel(false);
+    if (!result.canceled) {
+      const assetSelecionado = result.assets[0];
+      setImagemPerfil(assetSelecionado.uri);
+      setLixeiraVisivel(true);
     }
   };
 
-  const handleTirarFotoPerfil = async () => {
+  const handleRemoverFotoPerfil = () => {
+    setImagemPerfil(null);
+    setLixeiraVisivel(false);
+  };
+
+  const handleTirarFotoPerfil = () => {
     setCameraAberta(true);
+    setLixeiraVisivel(false);
   };
 
   const alternarCamera = () => {
@@ -54,6 +64,7 @@ const Perfil = ({ navigation }) => {
       const foto = await cameraRef.current.takePictureAsync();
       setImagemPerfil(foto.uri);
       setCameraAberta(false);
+      setLixeiraVisivel(true);
     }
   };
 
@@ -65,10 +76,15 @@ const Perfil = ({ navigation }) => {
     return <Text>Sem acesso à câmera</Text>;
   }
 
+  const menuItems = [
+    { key: 'informacoes', label: 'Minhas informações', onPress: () => console.log('Minhas informações') },
+    { key: 'agendamentos', label: 'Meus agendamentos', onPress: () => console.log('Meus agendamentos') },
+  ];
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => setModalVisivel(true)}>
-        <FontAwesome name="user" size={23} color="#FDF9ED" style={styles.Icon}/>
+        <FontAwesome name="user" size={23} color="#FDF9ED" style={styles.Icon} />
       </TouchableOpacity>
 
       <Modal
@@ -87,32 +103,48 @@ const Perfil = ({ navigation }) => {
               <TouchableOpacity onPress={handleSelecionarImagemPerfil}>
                 <View style={styles.avatarContainer}>
                   {imagemPerfil ? (
-                    <Image source={{ uri: imagemPerfil }} style={styles.avatar} />
+                    <>
+                      <Image source={{ uri: imagemPerfil }} style={styles.avatar} />
+                      {lixeiraVisivel && (
+                        <TouchableOpacity onPress={handleRemoverFotoPerfil} style={styles.lixeiraIcon}>
+                          <FontAwesome name="trash" size={20} color="#e4bbb7" />
+                        </TouchableOpacity>
+                      )}
+                    </>
                   ) : (
                     <Text style={styles.avatarPlaceholder}>Adicionar Foto</Text>
                   )}
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setCameraAberta(true)} style={styles.cameraIconContainer}>
+              <TouchableOpacity onPress={handleTirarFotoPerfil} style={styles.cameraIconContainer}>
                 <FontAwesome name="camera" size={30} color="#666" />
               </TouchableOpacity>
+
+              {/* Botões fictícios */}
+              {menuItems.map((item) => (
+                <TouchableOpacity key={item.key} onPress={item.onPress} style={styles.menuItem}>
+                  <Text style={styles.menuItemText}>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+              {/* Fim dos botões fictícios */}
+
+              {/* Botão "Sair" */}
+              <TouchableOpacity onPress={() => { setModalVisivel(false); navigation.navigate('Welcome'); }} style={styles.sairButton}>
+                <Text style={styles.sairButtonText}>Sair</Text>
+              </TouchableOpacity>
+              {/* Fim do botão "Sair" */}
             </View>
           ) : (
-            <Camera
-              style={styles.camera}
-              type={cameraType}
-              ref={cameraRef}
-              ratio="4:3"
-            >
+            <Camera style={styles.camera} type={cameraType} ref={cameraRef} ratio="4:3">
               <View style={styles.cameraOverlay}>
                 <TouchableOpacity onPress={() => setCameraAberta(false)} style={styles.fecharCameraButton}>
                   <FontAwesome name="times" size={30} color="#e4bbb7" />
                 </TouchableOpacity>
+                <TouchableOpacity onPress={handleConfirmarFoto} style={styles.tirarFotoButton}>
+                  <View style={styles.tirarFotoIcon} />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={alternarCamera} style={styles.alternarCameraButton}>
                   <FontAwesome name="refresh" size={30} color="#e4bbb7" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleConfirmarFoto} style={styles.confirmarFotoButton}>
-                  <FontAwesome name="check" size={30} color="#e4bbb7" />
                 </TouchableOpacity>
               </View>
             </Camera>
@@ -122,6 +154,7 @@ const Perfil = ({ navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -136,6 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDF9ED',
     paddingTop: 50,
   },
+
   fecharModalButton: {
     position: 'absolute',
     top: 20,
@@ -147,26 +181,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatarContainer: {
-    width: 250,
-    height: 250,
-    borderRadius: 150,
+    width: 300,
+    height: 300,
+    borderRadius: 200,
     backgroundColor: '#ddd',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: -370,
+    marginTop: -200,
+  },
+  cameraIconContainer: {
+    marginTop: -10,
+    marginBottom: 20, // Added marginBottom
   },
   avatar: {
-    width: 250,
-    height: 250,
-    borderRadius: 150,
+    width: '100%', // Use '100%' to ensure the image takes up the entire container
+    height: '100%',
+    borderRadius: 200,
   },
   avatarPlaceholder: {
     fontSize: 18,
     color: '#666',
-  },
-  cameraIconContainer: {
-    marginTop: -70,
   },
   sairButton: {
     marginTop: 20,
@@ -200,6 +235,38 @@ const styles = StyleSheet.create({
     marginBottom: -40,
     marginTop:15,
     marginLeft:10
+  },
+  lixeiraIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  tirarFotoButton: {
+    marginTop:'160%', // Ajuste a posição conforme necessário
+    alignSelf: 'center',
+  },
+  tirarFotoIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#e4bbb7',
+  },
+  menuItem: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  menuItemText: {
+    fontSize: 18,
+    color: '#333',
+  },
+  sairButton: {
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  sairButtonText: {
+    color: 'red',
+    fontSize: 18,
   },
 });
 

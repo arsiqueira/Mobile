@@ -4,10 +4,19 @@ import { StatusBar } from 'react-native';
 import Calendario from '../../componente/calendario';
 import Select from '../../componente/select';
 import Notificacoes from '../../componente/notificacao';
+import Perfil from '../../componente/perfil';
+import { useNavigation } from '@react-navigation/native';  // Importando useNavigation
 
 export default function Welcome() {
   const Separator = () => {
     return <View style={styles.separator} />;
+  };
+
+  const navigation = useNavigation();  // Obtendo a instância de navegação
+
+  const handleAgendarPress = () => {
+    navigation.navigate('Agendar');  // Navegando para a página 'Agendar'
+    console.log("Botão Agendar pressionado!");
   };
 
   return (
@@ -16,6 +25,7 @@ export default function Welcome() {
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <StatusBar backgroundColor="#E4BBB7" barStyle='light-content' />
           <View style={styles.containerTopo}>
+            <Perfil/>
             <Image source={require('../../../assets/assets/logo.png')} style={styles.img} />
             <Notificacoes/>
           </View>
@@ -33,6 +43,14 @@ export default function Welcome() {
 
             <Select />
             <Separator />
+
+            {/* Botão Agendar */}
+            <TouchableOpacity
+              style={styles.buttonAgendar}
+              onPress={handleAgendarPress}
+            >
+              <Text style={styles.buttonText}>Agendar</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </ImageBackground>
@@ -107,5 +125,17 @@ const styles = StyleSheet.create({
     marginTop: -6,
     borderBottomColor: '#D07B85',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  buttonAgendar: {
+    backgroundColor: '#D07B85',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: -10,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 18,
+    textAlign: 'center',
   },
 });

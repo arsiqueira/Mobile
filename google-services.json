@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202586572644",
+    "project_id": "app-mm-efac3",
+    "storage_bucket": "app-mm-efac3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202586572644:android:b80100f8e04e6d505d9c71",
+        "android_client_info": {
+          "package_name": "com.marciaManicure2023.app_mm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTYg8R89cy4FfSY-YPbqgl28Ks5LcxkQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
